@@ -9,7 +9,7 @@
    let winner = null;
    let isDraw = false;
    let move = 0;
-   let winPostion = [];
+   let winPosition = [];
    let isXNext = true;
    let isAscending = true;
    let matrix = [];
@@ -49,12 +49,12 @@
       );
 
       if (result) {
-         winPostion = result.position;
+         winPosition = result.position;
          winner = result.player;
          return;
       } else {
          winner = null;
-         winPostion = [];
+         winPosition = [];
          if (checkDraw(current.matrix) === true) {
             isDraw = true;
          }
@@ -64,7 +64,7 @@
    $: matrix = Array.from({ length: row }, () => Array(col).fill(null));
 
    const cellClick = (row: number, col: number) => {
-      if (!matrix[row][col] && !winPostion.length) {
+      if (!matrix[row][col] && !winPosition.length) {
          if (isXNext) {
             isXNext = false;
             matrix[row][col] = 'X';
@@ -128,7 +128,7 @@
          },
       ];
 
-      winPostion = [];
+      winPosition = [];
       isXNext = true;
       winner = null;
       isDraw = false;
@@ -139,10 +139,15 @@
 <div class="game">
    <div class="game-board">
       <div>
-         <Board {winPostion} onCellClick={cellClick} {matrix} />
+         <Board {winPosition} onCellClick={cellClick} {matrix} />
          <div class="button-container">
-            <button on:click={sortMove}>Sort move</button>
-
+            <button on:click={sortMove}
+               >{#if isAscending}
+                  Sort move descending
+               {:else}
+                  Sort move ascending
+               {/if}</button
+            >
             <button on:click={restartGame}>Restart game</button>
          </div>
       </div>
